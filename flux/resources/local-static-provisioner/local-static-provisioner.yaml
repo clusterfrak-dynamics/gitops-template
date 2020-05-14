@@ -1,0 +1,15 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: local-static-provisioner
+  namespace: local-static-provisioner
+spec:
+  releaseName: local-static-provisioner
+  chart:
+    git: https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner
+    path: helm/provisioner
+    ref: master
+  values:
+    classes:
+      - name: local
+        hostDir: /mnt/disks

@@ -1,0 +1,11 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: node-problem-detector
+  namespace: node-problem-detector
+spec:
+  releaseName: node-problem-detector
+  chart:
+    repository: https://kubernetes-charts.storage.googleapis.com
+    version: 1.7.6
+    name: node-problem-detector

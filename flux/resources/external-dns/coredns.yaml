@@ -1,0 +1,48 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: coredns
+  namespace: external-dns
+spec:
+  releaseName: coredns
+  chart:
+    repository: https://kubernetes-charts.storage.googleapis.com
+    version: 1.10.1
+    name: coredns
+  values:
+    serviceType: "NodePort"
+    replicaCount: 2
+    serviceAccount:
+      create: true
+    rbac:
+      pspEnable: true
+    isClusterService: false
+    extraSecrets:
+    - name: cilium-etcd-client-tls
+      mountPath: /etc/coredns/tls/etcd
+    servers:
+      - zones:
+        - zone: .
+        port: 53
+        plugins:
+        - name: errors
+        - name: health
+          configBlock: |-
+            lameduck 5s
+        - name: ready
+        - name: prometheus
+          parameters: 0.0.0.0:9153
+        - name: forward
+          parameters: . /etc/resolv.conf
+        - name: cache
+          parameters: 30
+        - name: loop
+        - name: reload
+        - name: loadbalance
+        - name: etcd
+          parameters: test.org
+          configBlock: |-
+            stubzones
+            path /skydns
+            endpoint https://cilium-etcd-client.external-dns.svc:2379
+            tls /etc/coredns/tls/etcd/etcd-client.crt /etc/coredns/tls/etcd/etcd-client.key /etc/coredns/tls/etcd/etcd-client-ca.crt

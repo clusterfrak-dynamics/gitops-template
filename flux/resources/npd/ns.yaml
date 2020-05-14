@@ -1,0 +1,7 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: node-problem-detector
+  labels:
+    name: node-problem-detector

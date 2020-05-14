@@ -1,0 +1,9 @@
+git:
+  pollInterval: 1m
+  url: ssh://git@github.com/clusterfrak-dynamics/gitops-template.git
+  branch: master
+  path: flux/resources
+syncGarbageCollection:
+  enabled: true
+registry:
+  disableScanning: false

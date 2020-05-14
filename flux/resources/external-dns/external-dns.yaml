@@ -1,0 +1,22 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: external-dns
+  namespace: external-dns
+spec:
+  releaseName: external-dns
+  chart:
+    repository: https://charts.bitnami.com/bitnami
+    version: 2.22.4
+    name: external-dns
+  values:
+    provider: coredns
+    policy: sync
+    coredns:
+      etcdEndpoints: "https://cilium-etcd-client.external-dns.svc:2379"
+      etcdTLS:
+        enabled: true
+        secretName: "cilium-etcd-client-tls"
+        caFilename: "etcd-client-ca.crt"
+        certFilename: "etcd-client.crt"
+        keyFilename: "etcd-client.key"

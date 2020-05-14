@@ -1,0 +1,15 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: metrics-server
+  namespace: metrics-server
+spec:
+  releaseName: metrics-server
+  chart:
+    repository: https://kubernetes-charts.storage.googleapis.com
+    version: 2.11.1
+    name: metrics-server
+  values:
+    args:
+      - --kubelet-preferred-address-types=InternalIP,ExternalIP
+      - --kubelet-insecure-tls
